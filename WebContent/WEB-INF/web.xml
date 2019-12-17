@@ -5,6 +5,7 @@
   xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
                       http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
   version="4.0">
+  <!--  
   	<servlet>
   		<servlet-name>test</servlet-name>
   		<servlet-class>kr.co.acorn.hello.HelloServlet</servlet-class>
@@ -13,5 +14,5 @@
   		<servlet-name>test</servlet-name>
   		<url-pattern>/acorn</url-pattern>
   	</servlet-mapping>
-  
+  -->
 </web-app>

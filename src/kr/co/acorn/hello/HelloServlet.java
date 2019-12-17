@@ -38,7 +38,7 @@ public class HelloServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 응답 MIME 타입과 문자 인코딩을 지정한다.
 		response.setContentType("text/html;charset=utf-8");
 		
@@ -48,6 +48,10 @@ public class HelloServlet extends HttpServlet {
 		out.print("<html>");
 		out.print("<body>");
 		out.print("<h1>Hello</h1>");
+		String id = request.getParameter("id");
+		String age = request.getParameter("age");
+		out.printf("id : %s, age : %s",id, age);
+		response.getWriter().print("<p>getWriter</p>");
 		out.print("</body>");
 		out.print("</html>");
 		
