@@ -55,7 +55,7 @@
 		  	
 		  
 		    <tr>
-		      <th scope="row"><a href="view.jsp"><%=dto.getNo() %></a></th>
+		      <th scope="row"><a href="view.jsp" name="no"><%=dto.getNo() %></a></th>
 		      <td><a href="view.jsp"><%=dto.getName() %></a></td>
 		      <td><a href="view.jsp"><%=dto.getLoc() %></a></td>
 		    </tr>

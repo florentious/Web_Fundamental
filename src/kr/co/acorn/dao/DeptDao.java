@@ -69,11 +69,50 @@ public class DeptDao {
 				e.printStackTrace();
 			}
 			
+		}
+		
+		return list;
+	}
+	
+	public DeptDto select(int no) {
+		DeptDto dto = null;
+		
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			con = ConnLocator.getConnection();
 			
+			StringBuffer sql = new StringBuffer();
+			
+			sql.append("SELECT deptno, dname, loc FROM dept WHERE deptno = ?");
+			
+			ps = con.prepareStatement(sql.toString());
+			
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				int index = 0;
+				dto = new DeptDto(rs.getInt(++index), rs.getString(++index), rs.getString(++index));
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs!= null) rs.close();
+				if(ps!= null) ps.close();
+				if(con!= null) con.close();
+			} catch (SQLException e) {
+				// TODO: handle exception
+			}
 		}
 		
 		
-		return list;
+		
+		return dto;
 	}
 	
 
