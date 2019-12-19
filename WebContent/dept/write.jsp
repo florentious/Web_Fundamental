@@ -2,6 +2,21 @@
 
 <%@ include file="../inc/header.jsp" %>
 
+<%
+	int cPage = 0;
+	String tempPage = request.getParameter("page");
+	
+	if(tempPage == null || tempPage.length() == 0) {
+		cPage = 1;
+	}
+	try {
+		cPage = Integer.parseInt(tempPage);
+	} catch(NumberFormatException e) {
+		cPage = 1;
+	}
+
+%>
+
   <!-- breadcrumb start -->
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -21,7 +36,7 @@
    <%-- input content --%>
 		<h3><strong>Insert Department</strong></h3><br>
 		
-		<form name="f" method="post" action="save.jsp">
+		<form name="f" method="post" >
 		  <div class="form-group row">
 		    <label for="no" class="col-sm-3 col-form-label">Department Number</label>
 		    <div class="col-sm-9">
@@ -43,7 +58,7 @@
 		  
 		</form>
 		<div class="text-right">
-			<a href="list.jsp" class="btn btn-outline-info">Goto List</a>
+			<a href="list.jsp?page=<%=cPage %>" class="btn btn-outline-info">Goto List</a>
 			<button type="button" id="saveDept" class="btn btn-outline-success">Sign Up</button>
 		</div>
 	
@@ -79,6 +94,8 @@
 				$("#loc").focus();
 				return;
 			} 
+			
+			f.action ="save.jsp?page=<%=cPage%>";
 			
 			f.submit();
 		});

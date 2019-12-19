@@ -23,14 +23,24 @@
       aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+<%
+	// 해당부분을 강조하기 위해서 시작값이 다름- 해당위치에 있다는 것을 강조하기 위해서
+	String uri = request.getRequestURI();
+
+%>
 
     <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
       <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Department Manager <span class="sr-only">(current)</span></a>
+        <li class="nav-item <%if(uri.startsWith("/dept/")) {%>active<%} %>">
+          <a class="nav-link" href="/dept/list.jsp">Department Manager <span class="sr-only">(current)</span></a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">notice</a>
+        
+        <li class="nav-item <%if(uri.startsWith("/emp/")) {%>active<%} %>">
+          <a class="nav-link" href="/emp/list.jsp">Employer Manager <span class="sr-only">(current)</span></a>
+        </li>
+        
+        <li class="nav-item <%if(uri.startsWith("/notice/")) {%>active<%} %>">
+          <a class="nav-link" href="/notice/list.jsp">Notice</a>
         </li>
       </ul>
       <form class="form-inline my-2 my-lg-0">

@@ -51,7 +51,7 @@
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="list.jsp">Home</a></li>
-      <li class="breadcrumb-item active" aria-current="page">DEPT</li>
+      <li class="breadcrumb-item active" aria-current="page">Employer</li>
     </ol>
   </nav>
   
@@ -64,25 +64,52 @@
       <div class="col-lg-12">
 
    <%-- input content --%>
-		<h3><strong>Department Infomation</strong></h3><br>
+		<h3><strong>Employer Details</strong></h3><br>
 		
 		<form name="f" method="post" >
 		  <div class="form-group row">
-		    <label for="no" class="col-sm-3 col-form-label">Department Number</label>
+		    <label for="no" class="col-sm-3 col-form-label">Employer Number</label>
 		    <div class="col-sm-9">
-		      <input type="number" class="form-control" id="no" name="no" value="<%=dto.getNo()%>">
+		      <input type="number" class="form-control" id="no" name="no">
 		    </div>
 		  </div>
 		  <div class="form-group row">
-		    <label for="name" class="col-sm-3 col-form-label">Department Name</label>
+		    <label for="name" class="col-sm-3 col-form-label">Name</label>
 		    <div class="col-sm-9">
-		      <input type="text" class="form-control" id="name" name="name" value="<%=dto.getName()%>">
+		      <input type="text" class="form-control" id="name" name="name">
 		    </div>
 		  </div>
 		  <div class="form-group row">
-		    <label for="loc" class="col-sm-3 col-form-label">Department Location</label>
+		    <label for="job" class="col-sm-3 col-form-label">Job</label>
 		    <div class="col-sm-9">
-		      <input type="text" class="form-control" id="loc" name="loc" value="<%=dto.getLoc()%>">
+		      <input type="text" class="form-control" id="job" name="job">
+		    </div>
+		  </div>
+		  
+		  <div class="form-group row">
+		    <label for="mgr" class="col-sm-3 col-form-label">Manager</label>
+		    <div class="col-sm-9">
+		      <input type="number" class="form-control" id="mgr" name="mgr">
+		    </div>
+		  </div>
+		  
+		  <div class="form-group row">
+		    <label for="sal" class="col-sm-3 col-form-label">Salary</label>
+		    <div class="col-sm-9">
+		      <input type="number" class="form-control" id="sal" name="sal">
+		    </div>
+		  </div>
+		  <div class="form-group row">
+		    <label for="comm" class="col-sm-3 col-form-label">commission</label>
+		    <div class="col-sm-9">
+		      <input type="number" class="form-control" id="comm" name="comm">
+		    </div>
+		  </div>
+		  
+		  <div class="form-group row">
+		    <label for="deptno" class="col-sm-3 col-form-label">Department Number</label>
+		    <div class="col-sm-9">
+		      <input type="number" class="form-control" id="deptno" name="deptno">
 		    </div>
 		  </div>
 		  
@@ -92,8 +119,8 @@
 		</form>
 		<div class="text-right">
 			<a href="list.jsp?page=<%=cPage %>" class="btn btn-outline-info">Goto List</a>
-			<button type="button" id="updateDept" class="btn btn-outline-success">Update</button>
-			<button type="button" id="deleteDept" class="btn btn-outline-danger">Delete</button>
+			<button type="button" id="updateEmp" class="btn btn-outline-success">Update</button>
+			<button type="button" id="deleteEmp" class="btn btn-outline-danger">Delete</button>
 			
 		</div>
 	
@@ -111,30 +138,40 @@
 <script>
 	$(function() {
 		//$("#no").focus();
-		$("#updateDept").click(function() {
+		$("#updateEmp").click(function() {
 			// 자바스크립트 유효성검사 필요없음
+			// 자바 스크립트 유효성 검사
 			if($("#no").val().length==0) {
-				alert("Input Department Number");
+				alert("Input Employer Number");
 				$("#no").focus();
 				return;
 			}
-			
 			if($("#name").val().length==0) {
-				alert("Input Department Name");
+				alert("Input Name");
 				$("#name").focus();
 				return;
-			} 
-			if($("#loc").val().length==0) {
-				alert("Input Department Location");
-				$("#loc").focus();
+			}
+			if($("#job").val().length==0) {
+				alert("Input Job");
+				$("#job").focus();
 				return;
-			} 
+			}
+			if($("#sal").val().length==0) {
+				alert("Input Salary ");
+				$("#sal").focus();
+				return;
+			}
+			if($("#deptno").val().length==0) {
+				alert("Input Department Number");
+				$("#deptno").focus();
+				return;
+			}
 			
 			f.action = "update.jsp?cNo=<%=cNo%>";
 			f.submit();
 		});
 		
-		$("#deleteDept").click(function() {
+		$("#deleteEmp").click(function() {
 			// 자바 스크립트 유효성 검사  필요없음
 			
 			f.action = "delete.jsp?cNo=<%=cNo%>";

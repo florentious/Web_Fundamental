@@ -93,7 +93,7 @@
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="/index.jsp">Home</a></li>
-      <li class="breadcrumb-item active" aria-current="page">DEPT</li>
+      <li class="breadcrumb-item active" aria-current="page">Emp</li>
     </ol>
   </nav>
   
@@ -105,54 +105,46 @@
     <div class="row">
       <div class="col-lg-12">
       
-      <h3><strong>Department List</strong><small>( total : <%=totalRows %> )</small></h3><br>
+      <h3><strong>Employer List</strong><small>( total : <%=totalRows %> )</small></h3><br>
       
       <div class="text-right"></div>
 
 
 		<table class="table table-hover">
 		<colgroup>
-			<col width="5%">
-			<col width="15%">
-			<col width="40%">
-			<col width="40%">
+			<col width="5%" />
+			<col width="15%"/>
+			<col width="20%"/>
+			<col width="20%"/>
+			<col width="15%"/>
+			<col width="25%"/>
 		</colgroup>
 		  <thead>
 		    <tr>		  		
 		      <th scope="col">#</th>
-		      <th scope="col">Department Number</th>
-		      <th scope="col">Department Name</th>
-		      <th scope="col">Department Location</th>
+		      <th scope="col">Employer Number</th>
+		      <th scope="col">Name</th>
+		      <th scope="col">Job</th>
+		      <th scope="col">Manager</th>
+		      <th scope="col">HireDate</th>		      
 		    </tr>
 		  </thead>
 		  <tbody>
-		  	<%
-		  		if(list.size() != 0) {
-		  			for(DeptDto dto : list) {
-		  			
-		  	%>
+		 
 		  	<form id="f" method="post">
 			    <tr>			    	
-			      <td><%=pageNum-- %></td>
-			      <td scope="row"><a href="view.jsp?page=<%=cPage%>&no=<%=dto.getNo()%>"><%=dto.getNo() %></a></td>
-			      <td><%=dto.getName() %></td>
-			      <td><%=dto.getLoc() %></td>
+			      <td></td>
+			      <td scope="row"></td>
+			      <td></td>
+			      <td></td>
 			    </tr>
 		    </form>
 		    
 		    
-		    <%
-		  			}
-		  		} else {
-		    %>
-		    
 		    <tr>
-		    	<td colspan="3"> Don't Exist Data </td>
+		    	<td colspan="6"> Don't Exist Data </td>
 		    </tr>
 		    
-		    <%
-		    }
-		  	%>
 		    
 		  </tbody>
 		</table>

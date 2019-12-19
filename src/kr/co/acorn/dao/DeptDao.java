@@ -23,6 +23,16 @@ public class DeptDao {
 		return single;
 	}
 	
+	private void close(Connection con, PreparedStatement ps, ResultSet rs) {
+		try {
+			if(rs!= null) rs.close();
+			if(ps!= null) ps.close();
+			if(con!= null) con.close();
+		} catch (SQLException e) {
+			// TODO: handle exception
+		}
+	}
+	
 	public ArrayList<DeptDto> select(int start, int len) {
 		ArrayList<DeptDto> list = new ArrayList<DeptDto>();
 		
@@ -60,18 +70,44 @@ public class DeptDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			try {
-				if(rs != null) rs.close();
-				if(ps != null) ps.close();
-				if(con != null) con.close();
-			} catch (SQLException e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
+			close(con, ps, rs);
 			
 		}
 		
 		return list;
+	}
+	
+	public int getTotalRows() {
+		int rows = 0;
+		
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			con = ConnLocator.getConnection();
+			
+			StringBuffer sql = new StringBuffer();
+			sql.append("SELECT COUNT(deptno) FROM dept ");
+			
+			ps = con.prepareStatement(sql.toString());
+			
+			rs = ps.executeQuery();
+			
+			int index = 0;
+			if(rs.next()) {
+				rows = rs.getInt(++index);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(con, ps, rs);
+			
+		}
+
+		return rows;
 	}
 	
 	public DeptDto select(int no) {
@@ -90,10 +126,13 @@ public class DeptDao {
 			
 			ps = con.prepareStatement(sql.toString());
 			
+			int index = 0;
+			ps.setInt(++index, no);
+			
 			rs = ps.executeQuery();
 			
 			if(rs.next()) {
-				int index = 0;
+				index = 0;
 				dto = new DeptDto(rs.getInt(++index), rs.getString(++index), rs.getString(++index));
 			}
 			
@@ -101,18 +140,120 @@ public class DeptDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			try {
-				if(rs!= null) rs.close();
-				if(ps!= null) ps.close();
-				if(con!= null) con.close();
-			} catch (SQLException e) {
-				// TODO: handle exception
-			}
+		
+			close(con, ps, rs);
 		}
 		
 		
 		
 		return dto;
+	}
+	
+	public boolean insert(DeptDto dto) {
+		boolean isSuccess = false;
+		
+		Connection con = null;
+		PreparedStatement ps = null;
+		
+		try {
+			con = ConnLocator.getConnection();
+			StringBuffer sql = new StringBuffer();
+			sql.append("INSERT INTO dept(deptno, dname, loc) VALUES(?,?,?)");
+			ps = con.prepareStatement(sql.toString());
+			
+			int index=0;
+			ps.setInt(++index, dto.getNo());
+			ps.setString(++index, dto.getName());
+			ps.setString(++index, dto.getLoc());
+			
+			ps.executeUpdate();
+			
+			isSuccess = true;
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(con, ps, null);
+		}
+		
+		
+		
+		return isSuccess;
+	}
+	
+	public boolean update(DeptDto dto, int curNo) {
+		boolean isSuccess = false;
+		
+		Connection con = null;
+		PreparedStatement ps = null;
+		
+		try {
+			con = ConnLocator.getConnection();
+			
+			StringBuffer sql = new StringBuffer();
+			
+			sql.append("UPDATE dept SET deptno = ?, dname = ?, loc = ? WHERE deptno = ?");
+			
+			ps = con.prepareStatement(sql.toString());
+			
+			int index = 0;
+			ps.setInt(++index, dto.getNo());
+			ps.setString(++index, dto.getName());
+			ps.setString(++index, dto.getLoc());
+			ps.setInt(++index, curNo);
+			
+			ps.executeUpdate();
+			
+			isSuccess = true;
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(con, ps, null);
+		}
+		
+		
+		return isSuccess;
+	}
+	
+	public boolean delete(int curNo) {
+		boolean isSuccess = false;
+		
+		Connection con = null;
+		PreparedStatement ps = null;
+		
+		try {
+			con=ConnLocator.getConnection();
+			
+			StringBuffer sql = new StringBuffer();
+			
+			sql.append("DELETE FROM dept WHERE deptno = ?");
+			
+			ps = con.prepareStatement(sql.toString());
+			
+			int index = 0;
+			ps.setInt(++index, curNo);
+			
+			ps.executeUpdate();
+			
+			isSuccess=true;
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			
+			close(con,ps,null);
+		}
+		
+		
+		
+		return isSuccess;
+		
 	}
 	
 
