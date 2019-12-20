@@ -1,5 +1,5 @@
-<%@page import="kr.co.acorn.dao.DeptDao"%>
-<%@page import="kr.co.acorn.dto.DeptDto"%>
+<%@page import="kr.co.acorn.dto.EmpDto"%>
+<%@page import="kr.co.acorn.dao.EmpDao"%>
 <%@ page pageEncoding="utf-8" %>
 
 <%@ include file="../inc/header.jsp" %>
@@ -35,8 +35,8 @@
 	}
 	
 	
-	DeptDao dao = DeptDao.getInstance();
-	DeptDto dto = dao.select(cNo);
+	EmpDao dao = EmpDao.getInstance();
+	EmpDto dto = dao.select(cNo);
 	
 	if(dto == null) {
 		response.sendRedirect("list.jsp?page="+cPage);
@@ -70,55 +70,70 @@
 		  <div class="form-group row">
 		    <label for="no" class="col-sm-3 col-form-label">Employer Number</label>
 		    <div class="col-sm-9">
-		      <input type="number" class="form-control" id="no" name="no">
+		      <input type="number" class="form-control" readonly id="no" name="no" value="<%=dto.getNo()%>">
 		    </div>
 		  </div>
 		  <div class="form-group row">
 		    <label for="name" class="col-sm-3 col-form-label">Name</label>
 		    <div class="col-sm-9">
-		      <input type="text" class="form-control" id="name" name="name">
+		      <input type="text" class="form-control" id="name" name="name" value="<%=dto.getName()%>">
 		    </div>
 		  </div>
 		  <div class="form-group row">
 		    <label for="job" class="col-sm-3 col-form-label">Job</label>
 		    <div class="col-sm-9">
-		      <input type="text" class="form-control" id="job" name="job">
+		      <input type="text" class="form-control" id="job" name="job" value="<%=dto.getJob()%>">
 		    </div>
 		  </div>
 		  
 		  <div class="form-group row">
 		    <label for="mgr" class="col-sm-3 col-form-label">Manager</label>
 		    <div class="col-sm-9">
-		      <input type="number" class="form-control" id="mgr" name="mgr">
+		      <input type="number" class="form-control" id="mgr" name="mgr" value="<%=dto.getMgr()%>">
+		    </div>
+		  </div>
+
+		  <div class="form-group row">
+		    <label for="hiredate" class="col-sm-3 col-form-label">HireDate</label>
+		    <div class="col-sm-9">
+		      <input type="text" class="form-control" readonly id="hiredate" name="hiredate" value="<%=dto.getHireDate()%>">
 		    </div>
 		  </div>
 		  
 		  <div class="form-group row">
 		    <label for="sal" class="col-sm-3 col-form-label">Salary</label>
 		    <div class="col-sm-9">
-		      <input type="number" class="form-control" id="sal" name="sal">
+		      <input type="number" class="form-control" id="sal" name="sal" value="<%=dto.getSal()%>">
 		    </div>
 		  </div>
 		  <div class="form-group row">
 		    <label for="comm" class="col-sm-3 col-form-label">commission</label>
 		    <div class="col-sm-9">
-		      <input type="number" class="form-control" id="comm" name="comm">
+		      <input type="number" class="form-control" id="comm" name="comm" value="<%=dto.getComm()%>">
 		    </div>
 		  </div>
 		  
 		  <div class="form-group row">
 		    <label for="deptno" class="col-sm-3 col-form-label">Department Number</label>
 		    <div class="col-sm-9">
-		      <input type="number" class="form-control" id="deptno" name="deptno">
+		      <input type="number" class="form-control" id="deptno" name="deptno" value="<%=dto.getDeptDto().getNo()%>">
 		    </div>
 		  </div>
+		  
+		  <div class="form-group row">
+		    <label for="dname" class="col-sm-3 col-form-label">Department Name</label>
+		    <div class="col-sm-9">
+		      <input type="text" class="form-control" readonly id="dname" name="dname" value="<%=dto.getDeptDto().getName()%>">
+		    </div>
+		  </div>
+		  
 		  
 		  <!-- page 넘길때 조정해서 알아서 넘기는 코드 -->
 		  <input type="hidden" name="page" value="<%=cPage %>"/>
 		  
 		</form>
-		<div class="text-right">
-			<a href="list.jsp?page=<%=cPage %>" class="btn btn-outline-info">Goto List</a>
+		<div class="text-right">			
+			<button type="button" id="prevPage" class="btn btn-outline-info">Go Back</button>
 			<button type="button" id="updateEmp" class="btn btn-outline-success">Update</button>
 			<button type="button" id="deleteEmp" class="btn btn-outline-danger">Delete</button>
 			
@@ -176,6 +191,10 @@
 			
 			f.action = "delete.jsp?cNo=<%=cNo%>";
 			f.submit();
+		});
+		
+		$("#prevPage").click(function() {
+			history.back(-1);
 		});
 		
 		

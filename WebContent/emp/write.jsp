@@ -20,7 +20,7 @@
   <!-- breadcrumb start -->
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="/index.jsp">Home</a></li>
+      <li class="breadcrumb-item"><a href="list.jsp">Home</a></li>
       <li class="breadcrumb-item active" aria-current="page">Employer</li>
     </ol>
   </nav>
@@ -37,12 +37,14 @@
 		<h3><strong>Insert Employer</strong></h3><br>
 		
 		<form name="f" method="post" >
-		  <div class="form-group row">
+		
+		 <%--  <div class="form-group row">
 		    <label for="no" class="col-sm-3 col-form-label">Employer Number</label>
 		    <div class="col-sm-9">
 		      <input type="number" class="form-control" id="no" name="no">
 		    </div>
-		  </div>
+		  </div> --%>
+		  
 		  <div class="form-group row">
 		    <label for="name" class="col-sm-3 col-form-label">Name</label>
 		    <div class="col-sm-9">
@@ -106,11 +108,6 @@
 		$("#no").focus();
 		$("#saveEmp").click(function() {
 			// 자바 스크립트 유효성 검사
-			if($("#no").val().length==0) {
-				alert("Input Employer Number");
-				$("#no").focus();
-				return;
-			}
 			if($("#name").val().length==0) {
 				alert("Input Name");
 				$("#name").focus();

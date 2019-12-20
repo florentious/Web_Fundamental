@@ -132,8 +132,40 @@ public class MemberManagerDao {
 		return isSuccess;		
 	}
 	
-	public boolean select() {
-		boolean isSuccess = false;
+	public int getTotal() {
+		int total = 0;
+		
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			con = ConnLocator.getConnection();
+			
+			StringBuffer sql = new StringBuffer();
+			sql.append("SELECT COUNT(member_id) FROM membermanager");
+			
+			ps = con.prepareStatement(sql.toString());
+			
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				total = rs.getInt(1);
+			}
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(con,ps,rs);
+		}
+		
+		return total;
+	}
+	
+	public ArrayList<MemberManagerDto> select() {
+
 		
 		ArrayList<MemberManagerDto> list = new ArrayList<MemberManagerDto>();
 		
@@ -154,29 +186,67 @@ public class MemberManagerDao {
 				int index = 0;
 				list.add(new MemberManagerDto(rs.getString(++index),rs.getString(++index)));
 			}
-			
-			isSuccess = true;	
+				
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			try {
-				if(rs != null) rs.close();
-				if(ps != null) ps.close();
-				if(con != null) con.close();
-			} catch (SQLException e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
+			close(con, ps, rs);
 		}
 		
-		return isSuccess;		
+		return list;		
+	}
+	private void close(Connection con, PreparedStatement ps, ResultSet rs) {
+		try {
+			if(rs != null) rs.close();
+			if(ps != null) ps.close();
+			if(con != null) con.close();
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 	}
 	
-	public boolean select(String id) {
-		boolean isSuccess = false;
+public ArrayList<MemberManagerDto> select(int start, int len) {
+
+		ArrayList<MemberManagerDto> list = new ArrayList<MemberManagerDto>();
 		
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			con = ConnLocator.getConnection();
+			
+			StringBuffer sql = new StringBuffer();
+			sql.append("SELECT member_id, member_name FROM memberManager ORDER BY member_id LIMIT ?,?");
+			ps = con.prepareStatement(sql.toString());
+			
+			int index = 0;
+			ps.setInt(++index, start);
+			ps.setInt(++index, len);
+			
+			
+			rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				index = 0;
+				list.add(new MemberManagerDto(rs.getString(++index),rs.getString(++index)));
+			}
+				
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(con, ps, rs);
+		}
+		
+		return list;		
+	}
+	
+	public MemberManagerDto select(String id) {
 		MemberManagerDto dto = null;
 		
 		Connection con = null;
@@ -197,24 +267,16 @@ public class MemberManagerDao {
 				int index = 0;
 				dto = new MemberManagerDto(rs.getString(++index),rs.getString(++index));
 			}
-			
-			isSuccess = true;	
+				
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			try {
-				if(rs != null) rs.close();
-				if(ps != null) ps.close();
-				if(con != null) con.close();
-			} catch (SQLException e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
+			close(con, ps, rs);
 		}
 		
-		return isSuccess;		
+		return dto;		
 	}
 	
 	

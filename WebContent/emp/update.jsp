@@ -1,4 +1,5 @@
-<%@page import="kr.co.acorn.dao.DeptDao"%>
+<%@page import="kr.co.acorn.dto.EmpDto"%>
+<%@page import="kr.co.acorn.dao.EmpDao"%>
 <%@page import="kr.co.acorn.dto.DeptDto"%>
 <%@ page pageEncoding="utf-8" %>
 
@@ -11,13 +12,20 @@
 	
 	int no = Integer.parseInt(request.getParameter("no"));
 	String name = request.getParameter("name");
-	String loc = request.getParameter("loc");
+	String job = request.getParameter("job");
+	int mgr = Integer.parseInt(request.getParameter("mgr")); 
 	
-	DeptDto dto = new DeptDto(no,name,loc);
+	int sal = Integer.parseInt(request.getParameter("sal"));
+	int comm = Integer.parseInt(request.getParameter("comm"));
+	int deptNo = Integer.parseInt(request.getParameter("deptno"));
 	
-	DeptDao dao = DeptDao.getInstance();
+	DeptDto deptDto = new DeptDto(deptNo,null,null);
 	
-	boolean isSuccess = dao.update(dto, cNo);
+	EmpDto dto = new EmpDto(no,name,job,mgr,null,sal,comm, deptDto);
+	
+	EmpDao dao = EmpDao.getInstance();
+	
+	boolean isSuccess = dao.update(dto);
 	
 	if(isSuccess) {
 %>

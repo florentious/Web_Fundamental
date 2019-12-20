@@ -1,6 +1,8 @@
-<%@page import="kr.co.acorn.dto.DeptDto"%>
+
+<%@page import="kr.co.acorn.dto.EmpDto"%>
+<%@page import="kr.co.acorn.dao.EmpDao"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="kr.co.acorn.dao.DeptDao"%>
+
 <%@ page pageEncoding="utf-8" %>
 
 <%@ include file="../inc/header.jsp" %>
@@ -13,12 +15,12 @@
 	// cPage = Integer.parseInt(temp_page); 하면 이상하면 
 	
 	int start = 0;
-	int len = 5;
+	int len = 10;
 	int totalRows = 0;
 	int totalPage = 0; 
 	int startPage = 0;
 	int endPage = 0;
-	int pageLength = 2;
+	int pageLength = 3;
 	
 	int pageNum = 0;
 	
@@ -45,7 +47,7 @@
 	
 	
 	
-	DeptDao dao = DeptDao.getInstance();
+	EmpDao dao = EmpDao.getInstance();
 
 	totalRows = dao.getTotalRows();
 	
@@ -82,7 +84,7 @@
 	startPage = cPage % pageLength == 0 ? 1 + (cpage/pageLength - 1) * pageLength  : 1 + (cpage/pageLength ) * pageLength;
 	endPage = totalPage > (startPage + pageLength -1 )? (startPage + pageLength -1 ) : totalPage;
 	 */
-	ArrayList<DeptDto> list = dao.select(start, len);
+	ArrayList<EmpDto> list = dao.select(start, len);
 	 
 	pageNum = totalRows-((cPage-1)*len);
 	
@@ -93,7 +95,7 @@
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="/index.jsp">Home</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Emp</li>
+      <li class="breadcrumb-item active" aria-current="page">Employer</li>
     </ol>
   </nav>
   
@@ -113,11 +115,12 @@
 		<table class="table table-hover">
 		<colgroup>
 			<col width="5%" />
-			<col width="15%"/>
+			<col width="5%"/>
 			<col width="20%"/>
 			<col width="20%"/>
 			<col width="15%"/>
-			<col width="25%"/>
+			<col width="20%"/>
+			<col width="15%"/>
 		</colgroup>
 		  <thead>
 		    <tr>		  		
@@ -126,25 +129,41 @@
 		      <th scope="col">Name</th>
 		      <th scope="col">Job</th>
 		      <th scope="col">Manager</th>
+		      <th scope="col">Department Name </th>
 		      <th scope="col">HireDate</th>		      
 		    </tr>
 		  </thead>
 		  <tbody>
 		 
+		 <%
+		 if(list.size() != 0) {
+			for(EmpDto dto : list) {
+		 
+		 %>
+		 
 		  	<form id="f" method="post">
 			    <tr>			    	
-			      <td></td>
-			      <td scope="row"></td>
-			      <td></td>
-			      <td></td>
+			      <td><%=pageNum-- %></td>
+			      <td scope="row"><a href="view.jsp?page=<%=cPage%>&no=<%=dto.getNo()%>"><%=dto.getNo() %></a></td>
+			      <td><%=dto.getName() %></td>
+			      <td><%=dto.getJob() %></td>
+			      <td><%=dto.getMgr() %></td>
+			      <td><a href="../dept/view.jsp?no=<%=dto.getDeptDto().getNo()%>"><%=dto.getDeptDto().getName() %></td>
+			      <td><%=dto.getHireDate() %></td>
 			    </tr>
 		    </form>
 		    
+		    <%
+				}
+			 } else {
+			
+		    %>
 		    
 		    <tr>
-		    	<td colspan="6"> Don't Exist Data </td>
+		    	<td colspan="7"> Don't Exist Data </td>
 		    </tr>
 		    
+		 	<%} %>
 		    
 		  </tbody>
 		</table>

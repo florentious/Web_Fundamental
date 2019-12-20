@@ -2,7 +2,7 @@
 
 
   <!-- footer start -->
-  <footer class="bg-dark bd-footer fixed-bottom" style="color: white; padding: 1em;">
+  <footer class="bg-dark bd-footer" style="color: white; padding: 1em; margin-top: 2em;">
       <div class="container-fluid text-right">
         <p>Since 2019-12-13</p>
         <p>By Flo</p>

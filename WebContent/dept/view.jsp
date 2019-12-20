@@ -91,7 +91,7 @@
 		  
 		</form>
 		<div class="text-right">
-			<a href="list.jsp?page=<%=cPage %>" class="btn btn-outline-info">Goto List</a>
+			<button type="button" id="prevPage" class="btn btn-outline-info">Go Back</button>
 			<button type="button" id="updateDept" class="btn btn-outline-success">Update</button>
 			<button type="button" id="deleteDept" class="btn btn-outline-danger">Delete</button>
 			
@@ -141,6 +141,10 @@
 			f.submit();
 		});
 		
+		$("#prevPage").click(function() {
+			// 이전가라는 코드(스크립트 내에)
+			history.back(-1);
+		});
 		
 	});
 </script>

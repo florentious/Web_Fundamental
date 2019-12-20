@@ -39,6 +39,10 @@
           <a class="nav-link" href="/emp/list.jsp">Employer Manager <span class="sr-only">(current)</span></a>
         </li>
         
+        <li class="nav-item <%if(uri.startsWith("/crawling/")) {%>active<%} %>">
+          <a class="nav-link" href="/crawling/list.jsp">Crawling <span class="sr-only">(current)</span></a>
+        </li>
+        
         <li class="nav-item <%if(uri.startsWith("/notice/")) {%>active<%} %>">
           <a class="nav-link" href="/notice/list.jsp">Notice</a>
         </li>

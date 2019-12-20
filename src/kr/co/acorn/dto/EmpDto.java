@@ -62,12 +62,8 @@ public class EmpDto {
 	
 	// list.jsp 에서는 5개정보만 가져오니까 5개용으로 만들고, 그 외에 write, view 에는  다가져오는 생성자를 만들어야한다.
 	// list.jsp 용도
-	public EmpDto(int no, String name, String job, int mgr, String hireDate) {
-		this.no = no;
-		this.name = name;
-		this.job = job;
-		this.mgr = mgr;
-		this.hireDate = hireDate;
+	public EmpDto(int no, String name, String job, int mgr, String hireDate, DeptDto deptdto) {
+		this(no, name, job, mgr, hireDate, 0, 0, deptdto);
 	}
 	
 	// detail 용도
