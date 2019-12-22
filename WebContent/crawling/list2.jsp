@@ -1,3 +1,4 @@
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Calendar"%>
 <%@page import="java.io.IOException"%>
 <%@page import="org.jsoup.nodes.Element"%>
@@ -11,9 +12,41 @@
 
 <%@ include file="../inc/header.jsp" %>
 
-<%
-	String url = "https://coinmarketcap.com/currencies/bitcoin/historical-data/";
-	//String url = "https://coinmarketcap.com/currencies/bitcoin/historical-data/?start=20011101&end=20191220";
+<%	
+	request.setCharacterEncoding("utf-8");
+
+	String startDate = request.getParameter("start");
+	String endDate = request.getParameter("end");
+	
+	Calendar cal = Calendar.getInstance();
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+	
+	if(endDate == null || endDate.length() == 0) {
+		endDate = sdf.format(cal.getTime());
+	}
+	
+	if(startDate == null || startDate.length() ==0) {
+		int sYear = Integer.parseInt(endDate.substring(0, 4));
+		int sMonth = Integer.parseInt(endDate.substring(4,6));
+		int sDay = Integer.parseInt(endDate.substring(6,8));
+		
+		StringBuffer sb = new StringBuffer();
+		
+		sb.append(String.format("%04d",sYear));
+		sb.append(String.format("%02d",sMonth-1));
+		sb.append(String.format("%02d",sDay));
+		
+		startDate = sb.toString();
+	}
+	
+	StringBuffer urlSB = new StringBuffer();
+	
+	urlSB.append("https://coinmarketcap.com/currencies/bitcoin/historical-data/?start=");
+	urlSB.append(startDate);
+	urlSB.append("&end=");
+	urlSB.append(endDate);
+	
+	String url = urlSB.toString();
 	
 	Document doc = null;
 	
@@ -26,11 +59,7 @@
 
 	Elements elements = doc.select(".cmc-table__table-wrapper-outer table tbody tr");
 	
-	Calendar cal = Calendar.getInstance();
-	
 	int cYear = cal.get(Calendar.YEAR);
-	
-	
 	
 %>
 
@@ -39,7 +68,7 @@
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="/index.jsp">Home</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Library</li>
+      <li class="breadcrumb-item active" aria-current="page">Crawling</li>
     </ol>
   </nav>
   
@@ -57,48 +86,87 @@
 
 
 
-		<div class="form-group">
-			<label for="coinType">Coin Type</label> <select class="form-control" id="coinType">
-				<option>bitCoin</option>
-			</select>
-		</div>
+		<form name="fSearch" method="get">
+			<div class="form-group">
+				<label for="coinType">Coin Type</label> <select class="form-control" id="coinType">
+					<option>bitCoin</option>
+				</select>
+			</div>
 		
 		<%-- start Year --%>
-		<form name="f" method="post" >
-		<div class="form-group" >
-			<div class="col-sm-3">
-				<label >Start Year : </label>
+			<div class="form-group row" >
+				<div class="col-sm-3">
+					<label >Start Year : </label>
+				</div>
+				<div class="col-sm-3">
+					<label> year : </label>
+					<select class="form-control" id="sYear" name="sYear" >
+					<%for(int i=cYear; i>=2010; i--) { %>
+						<option value="<%=i %>" ><%=i %></option>
+					<%} %>
+					</select>
+				</div>
+				
+				<div class="col-sm-3">
+					<label> month : </label>
+					<select class="form-control" id="sMonth" name="sMonth" >
+					<%for(int i=1; i<=12; i++) { %>
+						<option value="<%=i %>"><%=i %></option>
+					<%} %>
+					</select>
+				</div>
+				
+				<div class="col-sm-3">
+					<label> day : </label>
+					<select class="form-control" id="sDay" name="sDay">
+					<%for(int i=1; i<=31; i++) { %>
+						<option value="<%=i %>"><%=i %></option>
+					<%} %>
+					</select>
+				</div>
 			</div>
-			<div class="col-sm-3">
-				<select class="form-control" >
-				<%for(int i=2010; i<=cYear; i++) { %>
-					<option id="sYear" ><%=i %></option>
-				<%} %>
-				</select>
+	
+		<%-- End Year --%>
+			<div class="form-group row" >
+				<div class="col-sm-3">
+					<label >End Year : </label>
+				</div>
+				<div class="col-sm-3">
+					<label> year : </label>
+					<select class="form-control" id="eYear" name="eYear" >
+					<%for(int i=cYear; i>=2010; i--) { %>
+						<option value="<%=i %>"><%=i %></option>
+					<%} %>
+					</select>
+				</div>
+				
+				<div class="col-sm-3">
+					<label> month : </label>
+					<select class="form-control" id="eMonth" name="eMonth" >
+					<%for(int i=1; i<=12; i++) { %>
+						<option value="<%=i %>"><%=i %></option>
+					<%} %>
+					</select>
+				</div>
+				
+				<div class="col-sm-3">
+					<label> day : </label>
+					<select class="form-control" id="eDay" name="eDay" >
+					<%for(int i=1; i<=31; i++) { %>
+						<option value="<%=i %>"><%=i %></option>
+					<%} %>
+					</select>
+				</div>
 			</div>
 			
-			<div class="col-sm-3">
-				<select class="form-control">
-				<%for(int i=1; i<=12; i++) { %>
-					<option id="sMonth"><%=i %></option>
-				<%} %>
-				</select>
-			</div>
+			<input type="hidden" id="start" name="start" value=""/>
+			<input type="hidden" id="end" name="end" value=""/>
 			
-			<div class="col-sm-3">
-				<select class="form-control" >
-				<%for(int i=1; i<=31; i++) { %>
-					<option id="sDay"><%=i %></option>
-				<%} %>
-				</select>
+			<div class="text-right" >
+					<button type="button" class="btn btn-outline-success" id="search" style="margin-bottom : 1em">Search</button>
 			</div>
-		</div>
-			</form>
+		</form>
 		
-		
-		<div class="text-right" >
-				<a class="btn btn-outline-success" style="margin-bottom : 1em">Search</a>
-		</div>
 		
 
 
@@ -133,7 +201,7 @@
 			 
 		 %>
 		 
-		  	<form id="f" method="post">
+		  <!-- 	<form id="f" method="post"> -->
 			    <tr>			    	
 			      <td><%=trElement.child(index++).text() %></td>
 			      <td><%=trElement.child(index++).text() %></td>
@@ -143,7 +211,7 @@
 			      <td><%=trElement.child(index++).text() %></td>
 			      <td><%=trElement.child(index++).text() %></td>
 			    </tr>
-		    </form>
+		   <!--  </form> -->
 		    
 		    <%
 			 	}
@@ -196,3 +264,28 @@
   
   
 <%@ include file ="../inc/footer.jsp" %>
+
+<script>
+	$(function () {
+		$("#search").click(function() {
+			
+			let startDate = $("#sYear").val()+$("sMonth").val()+$("sDay").val();
+			let endDate = $("#eYear").val()+$("eMonth").val()+$("eDay").val();
+			
+			$("#start").val(startDate );
+			$("#end").val(endDate );
+
+			
+			
+			fSearch.action = "/crawling/list2.jsp";
+			fSearch.submit();
+			
+		});
+		
+		
+	});
+	
+
+
+
+</script>
