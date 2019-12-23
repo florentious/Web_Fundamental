@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>step01_ajax_get_json.html</title>
+<script>
+	var xhr = null;
+	try {
+		xhr = new XMLHttpRequest();
+	} catch(e) {
+		xhr = new ActiveXObject("Msxml2.XMLHTTP");
+	}
+	
+	if(xhr == null) {
+		alert("Error xhr object");
+	}
+
+</script>
+
+</head>
+<body>
+	
+	<div id="exam01"></div>
+	<button id="loadAjax">Load AJax</button>
+</body>
+<script>
+	document.getElementById("loadAjax").addEventListener("click",function(){
+		console.log('event');
+		/*
+		xhr.open("GET","member_json.jsp?start=0&length=20",true);
+	
+		xhr.onreadystatechange = function() {
+			if(xhr.readyState==4 && xhr.status == 200) {
+				console.log(typeof xhr.responseText);
+				const obj = JSON.parse(xhr.responseText);
+				console.log(typeof obj)
+				
+				const listArray = obj.cafelist;
+				let msg = '';
+				
+				for(let i=0;i<listArray.length;i++) {
+					let name = listArray[i].name;
+					let clubid = listArray[i].clubid;
+					msg += name + "," + clubid +"<br>";
+				}
+				
+				document.getElementById("exam01").innerHTML = msg;
+			}
+		}
+		
+		*/
+		
+		xhr.open("GET","emp_json.jsp?start=0&length=5",true);
+		
+		xhr.onreadystatechange = function() {
+			if(xhr.readyState==4 && xhr.status == 200) {
+				console.log(typeof xhr.responseText);
+				const obj = JSON.parse(xhr.responseText);
+				console.log(typeof obj)
+				
+				const listArray = obj.empList;
+				let msg = '';
+				
+				for(let i=0;i<listArray.length;i++) {
+					let no = listArray[i].no;
+					let name = listArray[i].name;
+					let job = listArray[i].job;
+					msg += no + "," + name + "," + job +  "<br>";
+				}
+				
+				document.getElementById("exam01").innerHTML = msg;
+			}
+		}
+
+		xhr.send(null);
+		
+	});
+
+</script>
+
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>step02_ajax_get_json.html</title>
+<script src="../js/jquery-3.4.1.js"></script>
+<script>
+	$(function() {
+		$("#loadAjax").click(function(){
+			$.ajax({
+				/*
+				type : 'GET',
+				url : 'emp_json.jsp?start=0&length=10',
+				
+				*/
+				type : 'POST',
+				url : 'emp_json.jsp',
+				data : {"start":0, "length":7},
+				
+				dataType : 'json', 	// xml, html, json 셋 중 하나가 올수 있다.
+				error : function() {
+					alert('Json Load Error');
+				},
+				success : function(obj) {
+					console.log(obj);
+					console.log(typeof obj);
+					
+					const listArray = obj.empList;
+					let msg = '';
+					
+					for(let i=0;i<listArray.length;i++) {
+						let no = listArray[i].no;
+						let name = listArray[i].name;
+						let job = listArray[i].job;
+						msg += no + "," + name + "," + job +  "<br>";
+					}
+					
+					//document.getElementById("exam01").innerHTML = msg;
+					
+					$("#exam01").html(msg);
+					
+				}
+			});
+			
+		});
+		
+		
+	});
+
+</script>
+</head>
+<body>
+	
+	<div id="exam01"></div>
+	<button id="loadAjax">Load AJax</button>
+</body>
+</html>

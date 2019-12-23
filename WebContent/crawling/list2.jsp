@@ -17,6 +17,7 @@
 
 	String startDate = request.getParameter("start");
 	String endDate = request.getParameter("end");
+	String coin = request.getParameter("coin");
 	
 	Calendar cal = Calendar.getInstance();
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
@@ -39,9 +40,29 @@
 		startDate = sb.toString();
 	}
 	
+	if(Integer.parseInt(endDate) < Integer.parseInt(startDate)) {
+		int sYear = Integer.parseInt(endDate.substring(0, 4));
+		int sMonth = Integer.parseInt(endDate.substring(4,6));
+		int sDay = Integer.parseInt(endDate.substring(6,8));
+		
+		StringBuffer sb = new StringBuffer();
+		
+		sb.append(String.format("%04d",sYear));
+		sb.append(String.format("%02d",sMonth-1));
+		sb.append(String.format("%02d",sDay));
+		
+		startDate = sb.toString();
+	}
+	
+	if(coin == null || coin.length() == 0) {
+		coin = "bitcoin";
+	}
+	
 	StringBuffer urlSB = new StringBuffer();
 	
-	urlSB.append("https://coinmarketcap.com/currencies/bitcoin/historical-data/?start=");
+	urlSB.append("https://coinmarketcap.com/currencies/");
+	urlSB.append(coin);
+	urlSB.append("/historical-data/?start=");
 	urlSB.append(startDate);
 	urlSB.append("&end=");
 	urlSB.append(endDate);
@@ -86,10 +107,15 @@
 
 
 
-		<form name="fSearch" method="get">
-			<div class="form-group">
-				<label for="coinType">Coin Type</label> <select class="form-control" id="coinType">
-					<option>bitCoin</option>
+		
+			<div class="form-group row" style="text-right">
+				<label for="coinTypeSelect col-sm-2"> Coin Type : </label> 
+				<select class="form-control col-sm-4" id="coinTypeSelect" name="coinTypeSelect">
+					<option value="bitcoin">bitcoin</option>
+					<option value="ethereum">ethereum</option>
+					<option value="xrp">xrp</option>
+					<option value="tether">tether</option>
+					<option value="bitcoin-cash">bitcoin-cash</option>
 				</select>
 			</div>
 		
@@ -159,6 +185,9 @@
 				</div>
 			</div>
 			
+		<form name="fSearch" method="get">
+			
+			<input type="hidden" id="coin" name="coin" value="bitcoin"/>
 			<input type="hidden" id="start" name="start" value=""/>
 			<input type="hidden" id="end" name="end" value=""/>
 			
@@ -203,7 +232,36 @@
 		 
 		  <!-- 	<form id="f" method="post"> -->
 			    <tr>			    	
-			      <td><%=trElement.child(index++).text() %></td>
+			    <% 
+			    /* change to date format */
+			    String beforeDate = trElement.child(index++).text();
+			    String beforeMonth = beforeDate.substring(0,3);
+			    int beforeMonthInt = 1;
+			    
+			    switch(beforeMonth) {
+			    case "Jan" : beforeMonthInt = 1; break;
+			    case "Feb" : beforeMonthInt = 2; break;
+			    case "Mar" : beforeMonthInt = 3; break;
+			    case "Apr" : beforeMonthInt = 4; break;
+			    case "May" : beforeMonthInt = 5; break;
+			    case "Jun" : beforeMonthInt = 6; break;
+			    case "Jul" : beforeMonthInt = 7; break;
+			    case "Aug" : beforeMonthInt = 8; break;
+			    case "Sep" : beforeMonthInt = 9; break;
+			    case "Oct" : beforeMonthInt = 10; break;
+			    case "Nov" : beforeMonthInt = 11; break;
+			    case "Dec" : beforeMonthInt = 12; break;
+			    
+			    }
+			    
+			    int beforeDay = Integer.parseInt(beforeDate.substring(4, 6));
+			    
+			    int beforeYear = Integer.parseInt(beforeDate.substring(8));
+			    
+			    String afterDate = String.format("%04d/%02d/%02d", beforeYear, beforeMonthInt, beforeDay);
+			    
+			    %>
+			      <td><%=afterDate %></td>
 			      <td><%=trElement.child(index++).text() %></td>
 			      <td><%=trElement.child(index++).text() %></td>
 			      <td><%=trElement.child(index++).text() %></td>
@@ -215,6 +273,9 @@
 		    
 		    <%
 			 	}
+			 /* chart */
+			 
+			 
 			 }else {
 		    %>
 		    
@@ -269,14 +330,44 @@
 	$(function () {
 		$("#search").click(function() {
 			
-			let startDate = $("#sYear").val()+$("sMonth").val()+$("sDay").val();
-			let endDate = $("#eYear").val()+$("eMonth").val()+$("eDay").val();
+			let monthLen = 2;
+			let dayLen = 2;
+			/* get '0' startDate */
+			let startMonth ="";
+			for(let i=0;i<monthLen - $("#sMonth").val().length; i++ ){
+				startMonth += "0";
+			}
+			startMonth += $("#sMonth").val();
+			
+			let startDay ="";
+			for(let i=0;i<dayLen - $("#sDay").val().length; i++ ){
+				startDay += "0";
+			}
+			startDay += $("#sDay").val();
+			/* end StartDate */
+			
+			/*  */
+			let endMonth ="";
+			for(let i=0;i<monthLen - $("#eMonth").val().length; i++ ){
+				endMonth += "0";
+			}
+			endMonth += $("#eMonth").val();
+			
+			let endDay ="";
+			for(let i=0;i<dayLen - $("#eDay").val().length; i++ ){
+				endDay += "0";
+			}
+			endDay += $("#eDay").val();
+			/*  */
+			
+			let startDate = $("#sYear").val()+ startMonth + startDay;
+			let endDate = $("#eYear").val()+endMonth + endDay;
 			
 			$("#start").val(startDate );
 			$("#end").val(endDate );
+			
+			$("#wantCoin").val($("#coinTypeSelect").val());
 
-			
-			
 			fSearch.action = "/crawling/list2.jsp";
 			fSearch.submit();
 			

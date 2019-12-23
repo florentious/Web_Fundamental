@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>step04_ajax_get_jsonp.html</title>
+<script src="../js/jquery-3.4.1.js"></script>
+<script>
+	$(function() {
+		$("#loadAjax").click(function(){
+			$.ajax({
+				
+				type : 'GET',
+				url : 'http://acornacademy.co.kr/blockchain/naver_json.jsp',
+				
+				/* 
+				type : 'POST',
+				url : 'emp_json.jsp',
+				data : {"start":0, "length":7},
+				*/
+				dataType : 'jsonp', 	// xml, html, json 셋 중 하나가 될 수있다.
+				jsonp : 'call',			// 내 url 이 아니면 jsonp로 하되 함수를 지원해야함 보통 'call', 'callback' 사용
+				error : function() {
+					alert('Json Load Error');
+				},
+				success : function(obj) {
+					console.log(obj);
+					console.log(typeof obj);
+					
+					$("#exam01").html(JSON.stringify(obj));
+					
+				}
+			});
+			
+		});
+		
+		
+	});
+
+</script>
+</head>
+<body>
+	
+	<div id="exam01"></div>
+	<button id="loadAjax">Load AJax</button>
+</body>
+</html>

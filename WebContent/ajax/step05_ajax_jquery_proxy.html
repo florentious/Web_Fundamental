@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>step04_ajax_get_jsonp.html</title>
+<script src="../js/jquery-3.4.1.js"></script>
+<script>
+	$(function() {
+		$("#loadAjax").click(function(){
+			$.ajax({
+				
+				type : 'GET',
+				url : 'naver_proxy.jsp',
+				
+				/* 
+				type : 'POST',
+				url : 'emp_json.jsp',
+				data : {"start":0, "length":7},
+				*/
+				dataType : 'json', 	// xml, html, json 셋 중 하나가 될 수있다.
+				error : function() {
+					alert('Json Load Error');
+				},
+				success : function(obj) {
+					console.log(obj);
+					console.log(typeof obj);
+					
+					$("#exam01").html(JSON.stringify(obj));
+					
+				}
+			});
+			
+		});
+		
+		
+	});
+
+</script>
+</head>
+<body>
+	
+	<div id="exam01"></div>
+	<button id="loadAjax">Load AJax</button>
+</body>
+</html>
