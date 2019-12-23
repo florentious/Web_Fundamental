@@ -1,18 +1,12 @@
-<%@page import="java.util.Date"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="java.util.Calendar"%>
-<%@page import="java.io.IOException"%>
 <%@page import="org.jsoup.nodes.Element"%>
 <%@page import="org.jsoup.select.Elements"%>
+<%@page import="java.io.IOException"%>
 <%@page import="org.jsoup.Jsoup"%>
 <%@page import="org.jsoup.nodes.Document"%>
-<%@page import="kr.co.acorn.dto.BitcoinDto"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="kr.co.acorn.dao.BitcoinDao"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Calendar"%>
+<%@page import="java.util.Date"%>
 <%@ page pageEncoding="utf-8" %>
-
-
-<%@ include file="../inc/header.jsp" %>
 
 <%
 	request.setCharacterEncoding("utf-8");
@@ -83,7 +77,9 @@
 	Elements elements = doc.select(".cmc-table__table-wrapper-outer table tbody tr");
 %>
 
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<html>
+<head>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       google.charts.load('current', {'packages':['line']});
       google.charts.setOnLoadCallback(drawChart);
@@ -122,7 +118,7 @@
 		    
 		    int beforeYear = Integer.parseInt(beforeDate.substring(8));
 		    
-		    //String afterDate = String.format("%04d/%02d/%02d", beforeYear, beforeMonthInt, beforeDay);
+		    String afterDate = String.format("%04d/%02d/%02d", beforeYear, beforeMonthInt, beforeDay);
 		    
 		    double open = Double.parseDouble(trElement.child(index++).text().replaceAll(",",""));
 		    double high = Double.parseDouble(trElement.child(index++).text().replaceAll(",",""));
@@ -131,10 +127,11 @@
 		    double volume = Double.parseDouble(trElement.child(index++).text().replaceAll(",",""));
 		    double marketCap = Double.parseDouble(trElement.child(index++).text().replaceAll(",",""));
 		 	
+		    out.print(close);
         %>
 
       data.addRows([
-    	  [new Date('<%=beforeYear%>','<%=beforeMonthInt%>','<%=beforeDay%>'), <%=close%> ]
+    	  [new Date('<%=beforeYear%>','<%=beforeMonthInt%>','<%=beforeDay%>'), <%=close%> ]	
       ]);
 
       	<%
@@ -160,41 +157,8 @@
       chart.draw(data, google.charts.Line.convertOptions(options));
     }
   </script>
-
-
-
-
-
-  <!-- breadcrumb start -->
-  <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="/index.jsp">Home</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Crawling</li>
-    </ol>
-  </nav>
-  
-  <!-- breadcrumb end -->
-  
-  <!-- main start -->
-
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12">
-
-   <%-- input content --%>
-   
-   		<h3><strong>Crawling Chart</strong></h3><br>
-
-		<div id="line_top_x"></div>
-
-
-
-      </div>
-    </div>
-  </div>
-
-  <!-- main end -->
-  
-  
-<%@ include file ="../inc/footer.jsp" %>
-
+</head>
+<body>
+  <div id="line_top_x"></div>
+</body>
+</html>

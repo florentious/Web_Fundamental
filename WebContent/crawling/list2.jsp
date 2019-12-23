@@ -109,13 +109,12 @@
 
 		
 			<div class="form-group row" style="text-right">
-				<label for="coinTypeSelect col-sm-2"> Coin Type : </label> 
-				<select class="form-control col-sm-4" id="coinTypeSelect" name="coinTypeSelect">
-					<option value="bitcoin">bitcoin</option>
-					<option value="ethereum">ethereum</option>
-					<option value="xrp">xrp</option>
-					<option value="tether">tether</option>
-					<option value="bitcoin-cash">bitcoin-cash</option>
+				<label for="coinTypeSelect" class="col-sm-3"> Coin Type : </label> 
+				<select class="form-control col-sm-3" id="coinTypeSelect" name="coinTypeSelect">
+					<option value="bitcoin" <%=coin.equals("bitcoin")? "selected":"" %> >bitcoin</option>
+					<option value="ethereum" <%=coin.equals("ethereum")? "selected":"" %> >ethereum</option>
+					<option value="xrp" <%=coin.equals("xrp")? "selected":"" %> >xrp</option>
+					<option value="tether" <%=coin.equals("tether")? "selected":"" %> >tether</option>
 				</select>
 			</div>
 		
@@ -128,7 +127,7 @@
 					<label> year : </label>
 					<select class="form-control" id="sYear" name="sYear" >
 					<%for(int i=cYear; i>=2010; i--) { %>
-						<option value="<%=i %>" ><%=i %></option>
+						<option value="<%=i %>" <%=Integer.parseInt(startDate.substring(0,4))==i? "selected":"" %> ><%=i %></option>
 					<%} %>
 					</select>
 				</div>
@@ -137,7 +136,7 @@
 					<label> month : </label>
 					<select class="form-control" id="sMonth" name="sMonth" >
 					<%for(int i=1; i<=12; i++) { %>
-						<option value="<%=i %>"><%=i %></option>
+						<option value="<%=i %>" <%=Integer.parseInt(startDate.substring(4,6))==i? "selected":"" %>><%=i %></option>
 					<%} %>
 					</select>
 				</div>
@@ -146,7 +145,7 @@
 					<label> day : </label>
 					<select class="form-control" id="sDay" name="sDay">
 					<%for(int i=1; i<=31; i++) { %>
-						<option value="<%=i %>"><%=i %></option>
+						<option value="<%=i %>" <%=Integer.parseInt(startDate.substring(6))==i? "selected":"" %>><%=i %></option>
 					<%} %>
 					</select>
 				</div>
@@ -161,7 +160,7 @@
 					<label> year : </label>
 					<select class="form-control" id="eYear" name="eYear" >
 					<%for(int i=cYear; i>=2010; i--) { %>
-						<option value="<%=i %>"><%=i %></option>
+						<option value="<%=i %>" <%=Integer.parseInt(endDate.substring(0,4))==i? "selected":"" %>><%=i %></option>
 					<%} %>
 					</select>
 				</div>
@@ -170,7 +169,7 @@
 					<label> month : </label>
 					<select class="form-control" id="eMonth" name="eMonth" >
 					<%for(int i=1; i<=12; i++) { %>
-						<option value="<%=i %>"><%=i %></option>
+						<option value="<%=i %>" <%=Integer.parseInt(endDate.substring(4,6))==i? "selected":"" %> ><%=i %></option>
 					<%} %>
 					</select>
 				</div>
@@ -179,22 +178,23 @@
 					<label> day : </label>
 					<select class="form-control" id="eDay" name="eDay" >
 					<%for(int i=1; i<=31; i++) { %>
-						<option value="<%=i %>"><%=i %></option>
+						<option value="<%=i %>" <%=Integer.parseInt(endDate.substring(6))==i? "selected":"" %> ><%=i %></option>
 					<%} %>
 					</select>
 				</div>
 			</div>
 			
-		<form name="fSearch" method="get">
+		<form name="f" method="get">
 			
 			<input type="hidden" id="coin" name="coin" value="bitcoin"/>
 			<input type="hidden" id="start" name="start" value=""/>
 			<input type="hidden" id="end" name="end" value=""/>
+		</form>
 			
 			<div class="text-right" >
+					<button type="button" class="btn btn-outline-info" id="chart" style="margin-bottom : 1em; margin-right : 1em">chart</button>
 					<button type="button" class="btn btn-outline-success" id="search" style="margin-bottom : 1em">Search</button>
 			</div>
-		</form>
 		
 		
 
@@ -366,10 +366,56 @@
 			$("#start").val(startDate );
 			$("#end").val(endDate );
 			
-			$("#wantCoin").val($("#coinTypeSelect").val());
+			$("#coin").val($("#coinTypeSelect").val());
 
-			fSearch.action = "/crawling/list2.jsp";
-			fSearch.submit();
+			f.action = "/crawling/list2.jsp";
+			f.submit();
+			
+		});
+		
+		
+		$("#chart").click(function() {
+			
+			let monthLen = 2;
+			let dayLen = 2;
+			/* get '0' startDate */
+			let startMonth ="";
+			for(let i=0;i<monthLen - $("#sMonth").val().length; i++ ){
+				startMonth += "0";
+			}
+			startMonth += $("#sMonth").val();
+			
+			let startDay ="";
+			for(let i=0;i<dayLen - $("#sDay").val().length; i++ ){
+				startDay += "0";
+			}
+			startDay += $("#sDay").val();
+			/* end StartDate */
+			
+			/*  */
+			let endMonth ="";
+			for(let i=0;i<monthLen - $("#eMonth").val().length; i++ ){
+				endMonth += "0";
+			}
+			endMonth += $("#eMonth").val();
+			
+			let endDay ="";
+			for(let i=0;i<dayLen - $("#eDay").val().length; i++ ){
+				endDay += "0";
+			}
+			endDay += $("#eDay").val();
+			/*  */
+			
+			let startDate = $("#sYear").val()+ startMonth + startDay;
+			let endDate = $("#eYear").val()+endMonth + endDay;
+			
+			$("#start").val(startDate );
+			$("#end").val(endDate );
+			
+			$("#coin").val($("#coinTypeSelect").val());
+			
+			f.action = "chart.jsp";
+			f.submit();
 			
 		});
 		
