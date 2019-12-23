@@ -92,6 +92,7 @@ public class MemberDao {
 			rs = ps.executeQuery();
 			
 			if(rs.next()) {
+				index = 0;
 				int count = rs.getInt(++index);
 				if(count != 0) {
 					isSuccess = true;
@@ -295,7 +296,7 @@ public class MemberDao {
 		return isSuccess;
 	}
 	
-	public boolean update(MemberDto dto, String email) {
+	public boolean update(MemberDto dto, String email, boolean isChangePwd) {
 		boolean isSuccess = false;
 		
 		Connection con = null;
@@ -304,15 +305,27 @@ public class MemberDao {
 		try {
 			con = ConnLocator.getConnection();
 			StringBuffer sql = new StringBuffer();
-			sql.append("UPDATE member SET m_email =?, m_name =?, m_pwd = PASSWORD(?), m_phone = ? WHERE m_email = ?");
-			ps = con.prepareStatement(sql.toString());
-			
-			int index=0;
-			ps.setString(++index, dto.getEmail());
-			ps.setString(++index, dto.getName());
-			ps.setString(++index, dto.getPwd());
-			ps.setString(++index, dto.getPhone());
-			ps.setString(++index, email);
+			// 비밀번호 변경을 하지 않을 경우
+			if(isChangePwd) {
+				sql.append("UPDATE member SET m_email =?, m_name =?, m_pwd = PASSWORD(?), m_phone = ? WHERE m_email = ?");				
+				ps = con.prepareStatement(sql.toString());
+				
+				int index=0;
+				ps.setString(++index, dto.getEmail());
+				ps.setString(++index, dto.getName());
+				ps.setString(++index, dto.getPwd());
+				ps.setString(++index, dto.getPhone());
+				ps.setString(++index, email);
+			} else {
+				sql.append("UPDATE member SET m_email =?, m_name =?, m_phone = ? WHERE m_email = ?");
+				ps = con.prepareStatement(sql.toString());
+				
+				int index=0;
+				ps.setString(++index, dto.getEmail());
+				ps.setString(++index, dto.getName());
+				ps.setString(++index, dto.getPhone());
+				ps.setString(++index, email);
+			}
 			
 			ps.executeUpdate();
 			
@@ -327,6 +340,5 @@ public class MemberDao {
 		
 		return isSuccess;
 	}
-	
 	
 }

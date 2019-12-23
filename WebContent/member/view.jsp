@@ -110,7 +110,7 @@
 		    </div>
 		  </div>
 		  
-		  <input type="hidden" name="checkEmail" id="checkEmail" value="no"/>
+		  <input type="hidden" name="checkEmail" id="checkEmail" value="yes"/>
 		  <input type="hidden" name="checkPwd" id="checkPwd" value="no"/>
 		  
 		</form>
@@ -137,7 +137,7 @@
 		$("#beforePassword").focus();
 		
 		/* update start */
-		$("#update").click(function() {
+		$("#updateMember").click(function() {
 			// 자바 스크립트 유효성 검사
 			if($("#name").val().length==0) {
 				$("#name").addClass("is-invalid");
@@ -202,7 +202,7 @@
 				return;
 			}
 			
-			f.action ="update.jsp?page=<%=cPage%>&email=<%=tempEmail%>";
+			f.action ="update.jsp?page=<%=cPage%>&tempEmail=<%=tempEmail%>";
 			
 			if($("#checkEmail").val() == "no") {
 				return;
@@ -218,7 +218,7 @@
 		/* update end */
 		
 		/* delete start */
-		$("#delete").click(function() {
+		$("#deleteMember").click(function() {
 			
 			
 			if($("#email").val().length==0) {

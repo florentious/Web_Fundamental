@@ -16,13 +16,18 @@
 	String pwd = request.getParameter("password");
 	String phone = request.getParameter("phone");
 	
+	boolean isChangePwd = true;
+	
+	if(pwd == null || pwd.length() == 0) {
+		isChangePwd = false;
+	}
 	
 	
 	MemberDto dto = new MemberDto(email,name, pwd, phone);
 	
 	MemberDao dao = MemberDao.getInstance();
 	
-	boolean isSuccess = dao.update(dto,tempEmail);
+	boolean isSuccess = dao.update(dto,tempEmail,isChangePwd);
 	
 	if(isSuccess) {
 %>

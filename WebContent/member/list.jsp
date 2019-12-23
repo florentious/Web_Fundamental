@@ -32,6 +32,11 @@
 	} catch(NumberFormatException e) {
 		cPage = 1;
 	}
+	
+	if(cPage == 0) {
+		cPage = 1;
+	}
+	
 	/* 
 	if(tempLen == null || tempLen.length() == 0) {
 		len = 2;
@@ -43,6 +48,7 @@
 	}
 	 */
 	
+	 
 	
 	
 	
@@ -93,7 +99,7 @@
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="/index.jsp">Home</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Employer</li>
+      <li class="breadcrumb-item active" aria-current="page">Member</li>
     </ol>
   </nav>
   
