@@ -143,7 +143,7 @@
       
       var options = {
         chart: {
-          title: 'BitCoin Chart <%=startDate%> ~ <%=endDate%>',
+        	title: '<%=coin%> Chart <%=startDate%> ~ <%=endDate%>',
           subtitle: 'Close'
         },
         width: 900,

@@ -59,7 +59,9 @@
 		</form>
 		<div class="text-right">
 			<a href="list.jsp?page=<%=cPage %>" class="btn btn-outline-info">Goto List</a>
+			<%if(memberDto != null) { %>
 			<button type="button" id="saveDept" class="btn btn-outline-success">Sign Up</button>
+			<%} %>
 		</div>
 	
           

@@ -110,6 +110,52 @@ public class MemberDao {
 		return isSuccess;
 	}
 	
+	public MemberDto getMember(MemberDto dto) {
+		MemberDto memberDto = null;
+		
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			con = ConnLocator.getConnection();
+			
+			StringBuffer sql = new StringBuffer();
+			
+			sql.append("SELECT m_email, m_name, m_phone, Date_format(m_regdate,'%y/%m/%d') ");
+			sql.append("FROM member ");
+			sql.append("WHERE m_email = ? AND m_pwd = PASSWORD(?) ");
+			
+			ps = con.prepareStatement(sql.toString());
+			
+			int index = 0;
+			ps.setString(++index, dto.getEmail());
+			ps.setString(++index, dto.getPwd());
+			
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				index = 0;
+				String email = rs.getString(++index);
+				String name = rs.getString(++index);
+				String phone = rs.getString(++index);
+				String regDate = rs.getString(++index);
+				
+				memberDto = new MemberDto(email,name,null,phone,regDate);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(con,ps,rs);
+			
+		}
+		
+	
+		return memberDto;
+	}
+	
 	public int getTotalRows() {
 		int totalRows = 0;
 		
