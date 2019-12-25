@@ -46,9 +46,9 @@
 	
 	
 %>
-
+path : <%=path %><br>
 name : <%=name%><br>	<%-- 아래 경로를 db에 넣어야 꺼낼수 있다. db에 넣을떄는 경로포함 주소까지 들어가야 꺼낼 수 있다. --%> 
-<img src="/upload/file/<%=year%>/<%=month %>/<%=fileName %>" style="width : 100px; height : 100px">
+<img src="/upload/file/<%=year%>/<%=month %>/<%=fileName %>" style="width : 100px; height : 100px"><br>
 File System Name : <a href="/upload/file/<%=year%>/<%=month %>/<%=fileName %>" > <%=fileName%> (<%=fileSize %>kb)</a><br>
 File Origin Name : <%=uploadName%><br>
 

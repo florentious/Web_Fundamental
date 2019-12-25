@@ -53,6 +53,7 @@
 			<%if(memberDto != null) { %>
 			<button type="button" id="uploadFile" class="btn btn-outline-success" style="margin-top : 1em">Upload</button>
 			<%} %>
+			<button type="button" id="uploadFile" class="btn btn-outline-success" style="margin-top : 1em">test Upload</button>
 		</div>
 	
           
